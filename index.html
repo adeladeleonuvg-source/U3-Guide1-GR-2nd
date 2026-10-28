@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colegio Montano - Interactive Grammar Board (Our World 2)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        montanoBlue: '#1269A8',
+                        montanoYellow: '#F7D615',
+                        montanoTeal: '#54887D',
+                        montanoLightBlue: '#88B5C7',
+                        montanoOlive: '#A6B046',
+                        montanoBg: '#F2F5E9'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #F2F5E9;
+        }
+        /* Custom scrollbar for pleasant whiteboard feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F2F5E9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #88B5C7;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1269A8;
+        }
+    </style>
+</head>
+<body class="bg-montanoBg min-h-screen text-slate-800 flex flex-col items-center p-3 md:p-6">
+
+    <!-- Interactive Whiteboard Frame -->
+    <div id="whiteboard-container" class="w-full max-w-6xl bg-white rounded-xl shadow-2xl border-4 border-montanoYellow overflow-hidden flex flex-col transition-all duration-300">
+        
+        <!-- Header Bar -->
+        <header class="bg-montanoBlue text-white p-4 md:px-6 flex flex-wrap items-center justify-between gap-4 border-b-4 border-montanoYellow">
+            <div class="flex items-center space-x-4">
+                <!-- Institutional Logo -->
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyEop0yf6lZ7Jk9MILZxF1rBj4Oqs5esyhIQ&s" alt="Colegio Montano Logo" class="h-12 w-12 rounded-full object-cover bg-white p-1 shadow-md border-2 border-montanoYellow">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-wide">Colegio Montano</h1>
+                    <p class="text-xs md:text-sm text-montanoLightBlue font-medium">Interactive Study Guide • 2nd Grade • Our World 2 (Unit Grammar)</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3 ml-auto">
+                <span class="bg-montanoOlive text-white text-xs px-3 py-1.5 rounded-full font-bold shadow">Grade 2</span>
+                <!-- Fullscreen Button -->
+                <button onclick="toggleFullscreen()" class="bg-montanoYellow text-slate-900 font-bold px-4 py-2 rounded-lg shadow hover:bg-yellow-300 transition flex items-center space-x-2 text-sm border border-yellow-500">
+                    <span id="fs-icon">⛶</span>
+                    <span class="hidden sm:inline">Fullscreen</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Horizontal Navigation Tabs -->
+        <nav class="bg-slate-100 border-b border-montanoLightBlue/40 px-3 py-2 flex flex-wrap gap-2 overflow-x-auto">
+            <button onclick="switchTab('theory')" class="tab-btn px-4 py-2 rounded-lg font-bold text-sm transition bg-montanoBlue text-white shadow-sm flex items-center space-x-2" data-tab="theory">
+                <span>📚</span> <span>1. Theory</span>
+            </button>
+            <button onclick="switchTab('examples')" class="tab-btn px-4 py-2 rounded-lg font-bold text-sm transition bg-white text-slate-700 hover:bg-montanoLightBlue/20 flex items-center space-x-2" data-tab="examples">
+                <span>💡</span> <span>2. Examples (15)</span>
+            </button>
+            <button onclick="switchTab('exercises')" class="tab-btn px-4 py-2 rounded-lg font-bold text-sm transition bg-white text-slate-700 hover:bg-montanoLightBlue/20 flex items-center space-x-2" data-tab="exercises">
+                <span>✍️</span> <span>3. Exercises (15)</span>
+            </button>
+            <button onclick="switchTab('reflection')" class="tab-btn px-4 py-2 rounded-lg font-bold text-sm transition bg-white text-slate-700 hover:bg-montanoLightBlue/20 flex items-center space-x-2" data-tab="reflection">
+                <span>🤔</span> <span>4. Critical Reflection</span>
+            </button>
+            <button onclick="switchTab('evaluation')" class="tab-btn px-4 py-2 rounded-lg font-bold text-sm transition bg-white text-slate-700 hover:bg-montanoLightBlue/20 flex items-center space-x-2" data-tab="evaluation">
+                <span>📝</span> <span>5. Formative Evaluation</span>
+            </button>
+        </nav>
+
+        <!-- Main Workspace Canvas Area -->
+        <main class="p-4 md:p-8 flex-1 overflow-y-auto bg-montanoBg/40 max-h-[72vh]">
+
+            <!-- TAB 1: THEORY -->
+            <section id="tab-theory" class="tab-content space-y-6">
+                <div class="bg-white p-6 rounded-xl border-l-8 border-montanoBlue shadow-md">
+                    <h2 class="text-2xl font-bold text-montanoBlue mb-3">Welcome to Unit Grammar Explorer! 🌟</h2>
+                    <p class="text-slate-600 leading-relaxed">
+                        In this interactive whiteboard guide based on <strong>Our World 2</strong>, we will master how to talk about feelings, greet friends, describe people's expressions, and count things using regular and irregular plurals. Let's learn step by step!
+                    </p>
+                </div>
+
+                <!-- Concept Card 1 -->
+                <div class="bg-montanoLightBlue/15 p-6 rounded-xl border border-montanoLightBlue/50 shadow-sm space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <span class="bg-montanoBlue text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">1</span>
+                        <h3 class="text-xl font-bold text-montanoBlue">How are you? & I'm + Adjective</h3>
+                    </div>
+                    <p class="text-slate-700">We use this structure to ask and answer about our feelings and physical state right now.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-montanoTeal/30">
+                            <h4 class="font-bold text-montanoTeal mb-2">Questions & Answers</h4>
+                            <ul class="space-y-1 text-sm text-slate-700">
+                                <li class="font-semibold">• <strong>How are you?</strong></li>
+                                <li class="text-montanoBlue pl-4">→ I'm <strong>great</strong>! / I'm <strong>fine</strong>. / I'm <strong>OK</strong>. / I'm <strong>tired</strong>.</li>
+                                <li class="text-slate-500 pl-4 text-xs italic">Note: "I'm" = "I am" | "We're" = "We are"</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-montanoTeal/30">
+                            <h4 class="font-bold text-montanoTeal mb-2">He / She Looks + Adjective</h4>
+                            <ul class="space-y-1 text-sm text-slate-700">
+                                <li class="font-semibold">• Describing others' expressions:</li>
+                                <li class="text-montanoBlue pl-4">→ She looks <strong>hungry</strong>. / He looks <strong>angry</strong>.</li>
+                                <li class="text-montanoBlue pl-4">→ You look <strong>surprised</strong>. / He looks <strong>excited</strong>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Concept Card 2 -->
+                <div class="bg-montanoLightBlue/15 p-6 rounded-xl border border-montanoLightBlue/50 shadow-sm space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <span class="bg-montanoBlue text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">2</span>
+                        <h3 class="text-xl font-bold text-montanoBlue">Regular and Irregular Plurals</h3>
+                    </div>
+                    <p class="text-slate-700">When we have more than one noun, we change singular words into plural forms.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-montanoTeal/30">
+                            <h4 class="font-bold text-montanoTeal mb-2">Regular Plurals (Add -s / -es / -ves)</h4>
+                            <ul class="space-y-1 text-sm text-slate-700">
+                                <li>• book → book<strong>s</strong></li>
+                                <li>• kite → kite<strong>s</strong></li>
+                                <li>• shelf → shel<strong>ves</strong> (f/fe changes to -ves)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-montanoTeal/30">
+                            <h4 class="font-bold text-montanoTeal mb-2">Irregular Plurals (Completely Change!)</h4>
+                            <ul class="space-y-1 text-sm text-slate-700">
+                                <li>• tooth → t<strong>ee</strong>th</li>
+                                <li>• foot → f<strong>ee</strong>t</li>
+                                <li>• person → p<strong>eople</strong></li>
+                                <li>• man → m<strong>e</strong>n | woman → wom<strong>e</strong>n | child → childr<strong>en</strong></li>
+                                <li>• sheep → sheep (No change!)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: EXAMPLES (15 Total: 5 Basic, 5 Intermediate, 5 Advanced) -->
+            <section id="tab-examples" class="tab-content hidden space-y-6">
+                <div class="bg-white p-5 rounded-xl border-l-8 border-montanoOlive shadow-sm">
+                    <h2 class="text-2xl font-bold text-montanoBlue">Resolved Examples (15 Total)</h2>
+                    <p class="text-slate-600 text-sm">Review these clear models to understand how grammar rules apply across basic, intermediate, and advanced levels.</p>
+                </div>
+
+                <!-- Basic Level Examples (1 to 5) -->
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2 text-montanoTeal font-bold text-lg border-b pb-1">
+                        <span>🟢 Basic Level Examples (Feelings & Simple Plurals)</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-montanoOlive">
+                        <span class="text-xs font-bold text-montanoOlive bg-green-50 px-2 py-0.5 rounded">Example 1 (Basic)</span>
+                        <h4 class="font-bold text-slate-800 mt-1">Greeting and State: How are you?</h4>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Scenario:</strong> Meeting a classmate in the morning.</p>
+                        <p class="text-sm text-montanoBlue font-medium mt-1">Solution: <em>"How are you?"</em> — <em>"I'm great!"</em></p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-montanoOlive">
+                        <span class="text-xs font-bold text-montanoOlive bg-green-50 px-2 py-0.5 rounded">Example 2 (Basic)</span>
+                        <h4 class="font-bold text-slate-800 mt-1">Expressing Tiredness</h4>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Scenario:</strong> After running in PE class.</p>
+                        <p class="text-sm text-montanoBlue font-medium mt-1">Solution: <em>"I'm tired."</em></p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-montanoOlive">
+                        <span class="text-xs font-bold text-montanoOlive bg-green-50 px-2 py-0.5 rounded">Example 3 (Basic)</span>
+                        <h4 class="font-bold text-slate-800 mt-1">Regular Plural: Kites in the Park</h4>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Scenario:</strong> Counting flying toys.</p>
+                        <p class="text-sm text-montanoBlue font-medium mt-1">Solution: One kite → Three <em>kites</em>.</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-montanoOlive">
+                        <span class="text-xs font-bold text-montanoOlive bg-green-50 px-2 py-0.5 rounded">Example 4 (Basic)</span>
+                        <h4 class="font-bold text-slate-800 mt-1">Regular Plural: Friends</h4>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Scenario:</strong> Talking about playmates.</p>
+                        <p class="text-sm text-montanoBlue font-medium mt-1">Solution: My friend → My <em>friends</em> like to play.</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-montanoOlive">
+                        <span class="text-xs font-bold text-montanoOlive bg-green-50 px-2 py-0.5 rounded">Example 5 (Basic)</span>
+                        <h4 class="font-bold text-slate-800 mt-1">Simple Expression: She looks happy</h4>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Scenario:</strong> A girl smiling at her birthday party.</p>
+                        <p class="text-sm text-montanoBlue font-medium mt-1">Solution: <em>She looks happy.</em></p>
+                    </div>
+                </div>
+
+                <!-- Intermediate Level Examples (6 to 10) -->
+                <div class="space-y-4 pt-4">
+                    <div class="flex items-center space-x-2 text-montanoBlue font-bold text-lg border-b pb-1">
+                        <span>🔵 Intermediate Level Examples (Irregular Plurals & Expressions)</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-montanoBlue">
+                        <span class="text-xs font-bold text-montanoBlue bg-blue-50 px-2 py-0.5 rounded">Example 6 (Intermediate)</span>
+                        <h4 class="font-bold text-slate-800 mt-1">Irregular Plural: Tooth to Teeth</h4>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Scenario:</strong> A rabbit eating a carrot.</p>
+                        <p class="text-sm text-montanoBlue font-medium mt-1">Solution: My rabbit has two big <em>teeth</em>.</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-montanoBlue">
+                        <span class="text-xs font-bold text-montanoBlue bg-blue-50 px-2 py-0.5 rounded">Example 7 (Intermediate)</span>
+                        <h4 class="font-bold text-slate-800 mt-1">Irregular Plural: Shelf to Shelves</h4>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Scenario:</strong> Organizing books in the classroom.</p>
+                        <p class="text-sm text-montanoBlue font-medium mt-1">Solution: The knives are next to the <em>shelves</em>.</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-montanoBlue">
+                        <span class="text-xs font-bold text-montanoBlue bg-blue-50 px-2 py-0.5 rounded">Example 8 (Intermediate)</span>
+                        <h4 class="font-bold text-slate-800 mt-1">He looks + Adjective</h4>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Scenario:</strong> A boy yawning and rubbing his eyes.</p>
+                        <p class="text-sm text-montanoBlue font-medium mt-1">Solution: <em>He looks tired.</em></p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-montanoBlue">
+                        <span class="text-xs font-bold text-montanoBlue bg-blue-50 px-2 py-0.5 rounded">Example 9 (Intermediate)</span>
+                        <h4 class="font-bold text-slate-800 mt-1">She looks + Adjective (Hungry)</h4>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Scenario:</strong> A girl eating spaghetti eagerly.</p>
+                        <p class="text-sm text-montanoBlue font-medium mt-1">Solution: <em>She looks hungry.</em></p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-montanoBlue">
+                        <span class="text-xs font-bold text-montanoBlue bg-blue-50 px-2 py-0.5 rounded">Example 10 (Intermediate)</span>
+                        <h4 class="font-bold text-slate-800 mt-1">Plural: Person to People</h4>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Scenario:</strong> Gathering at a birthday party.</p>
+                        <p class="text-sm text-montanoBlue font-medium mt-1">Solution: There are some <em>people</em> at the party.</p>
+                    </div>
+                </div>
+
+                <!-- Advanced Level Examples (11 to 15) -->
+                <div class="space-y-4 pt-4">
+                    <div class="flex items-center space-x-2 text-montanoTeal font-bold text-lg border-b pb-1">
+                        <span>🟣 Advanced Level Examples (Combined Rules & Context)</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-montanoTeal">
+                        <span class="text-xs font-bold text-montanoTeal bg-teal-50 px-2 py-0.5 rounded">Example 11 (Advanced)</span>
+                        <h4 class="font-bold text-slate-800 mt-1">Multiple Irregular Plurals in One Sentence</h4>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Scenario:</strong> Family gathering count.</p>
+                        <p class="text-sm text-montanoBlue font-medium mt-1">Solution: There are three <em>men</em>, three <em>women</em>, and five <em>children</em>.</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-montanoTeal">
+                        <span class="text-xs font-bold text-montanoTeal bg-teal-50 px-2 py-0.5 rounded">Example 12 (Advanced)</span>
+                        <h4 class="font-bold text-slate-800 mt-1">Complex Expression with Dialogue</h4>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Scenario:</strong> Asking about wellbeing and noting fatigue.</p>
+                        <p class="text-sm text-montanoBlue font-medium mt-1">Solution: <em>"How are you?"</em> — <em>"I'm OK. I'm tired."</em></p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-montanoTeal">
+                        <span class="text-xs font-bold text-montanoTeal bg-teal-50 px-2 py-0.5 rounded">Example 13 (Advanced)</span>
+                        <h4 class="font-bold text-slate-800 mt-1">Scrambled Word Order: Question Formation</h4>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Given words:</strong> you? / How / are</p>
+                        <p class="text-sm text-montanoBlue font-medium mt-1">Solution: <em>How are you?</em></p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-montanoTeal">
+                        <span class="text-xs font-bold text-montanoTeal bg-teal-50 px-2 py-0.5 rounded">Example 14 (Advanced)</span>
+                        <h4 class="font-bold text-slate-800 mt-1">Animal Body Parts & Irregular Plurals</h4>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Scenario:</strong> Describing a dog wearing boots.</p>
+                        <p class="text-sm text-montanoBlue font-medium mt-1">Solution: Find a dog wearing boots on its <em>feet</em>. (foot → feet)</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-montanoTeal">
+                        <span class="text-xs font-bold text-montanoTeal bg-teal-50 px-2 py-0.5 rounded">Example 15 (Advanced)</span>
+                        <h4 class="font-bold text-slate-800 mt-1">Invariable Plural (Sheep)</h4>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Scenario:</strong> Counting farm animals in a playground picture.</p>
+                        <p class="text-sm text-montanoBlue font-medium mt-1">Solution: Find three <em>sheep</em>. (sheep does not change in plural!)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: EXERCISES (15 Total with Toggleable Solutions) -->
+            <section id="tab-exercises" class="tab-content hidden space-y-6">
+                <div class="bg-white p-5 rounded-xl border-l-8 border-montanoBlue shadow-sm">
+                    <h2 class="text-2xl font-bold text-montanoBlue">Practical Exercises (15 Total)</h2>
+                    <p class="text-slate-600 text-sm">Solve each interactive problem on your notebook, then click <strong>"Show Solution"</strong> to check your step-by-step answer!</p>
+                </div>
+
+                <!-- Basic Exercises (1 to 5) -->
+                <div class="space-y-4">
+                    <h3 class="text-montanoOlive font-bold text-lg border-b pb-1">🟢 Basic Level Exercises</h3>
+
+                    <!-- Exercise 1 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold bg-green-100 text-montanoOlive px-2 py-1 rounded">Exercise 1</span>
+                            <span class="text-xs text-slate-400 font-medium">Topic: Greetings</span>
+                        </div>
+                        <p class="text-slate-800 font-medium">Complete the greeting dialog: <em>"How are you?"</em> → <em>"I'm ________! (great)"</em></p>
+                        <button onclick="toggleSolution('sol-1')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="sol-1" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Step-by-step Solution:</strong> The target response uses the adjective "great" after "I'm".<br><strong>Answer:</strong> I'm <strong>great!</strong>
+                        </div>
+                    </div>
+
+                    <!-- Exercise 2 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold bg-green-100 text-montanoOlive px-2 py-1 rounded">Exercise 2</span>
+                            <span class="text-xs text-slate-400 font-medium">Topic: Plurals (-s)</span>
+                        </div>
+                        <p class="text-slate-800 font-medium">Write the plural form of the noun: <em>kite</em> → <em>three ________</em></p>
+                        <button onclick="toggleSolution('sol-2')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="sol-2" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Step-by-step Solution:</strong> Add "-s" to regular nouns.<br><strong>Answer:</strong> three <strong>kites</strong>
+                        </div>
+                    </div>
+
+                    <!-- Exercise 3 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold bg-green-100 text-montanoOlive px-2 py-1 rounded">Exercise 3</span>
+                            <span class="text-xs text-slate-400 font-medium">Topic: Contractions</span>
+                        </div>
+                        <p class="text-slate-800 font-medium">What does <strong>"We're"</strong> mean in full words?</p>
+                        <button onclick="toggleSolution('sol-3')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="sol-3" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Step-by-step Solution:</strong> "We're" combines the pronoun "We" and the verb "are".<br><strong>Answer:</strong> <strong>We are</strong>
+                        </div>
+                    </div>
+
+                    <!-- Exercise 4 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold bg-green-100 text-montanoOlive px-2 py-1 rounded">Exercise 4</span>
+                            <span class="text-xs text-slate-400 font-medium">Topic: Facial Expression</span>
+                        </div>
+                        <p class="text-slate-800 font-medium">Complete: A boy with a big smile and bright eyes looks ________. (happy / angry)</p>
+                        <button onclick="toggleSolution('sol-4')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="sol-4" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Step-by-step Solution:</strong> A smile indicates happiness.<br><strong>Answer:</strong> <strong>happy</strong>
+                        </div>
+                    </div>
+
+                    <!-- Exercise 5 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold bg-green-100 text-montanoOlive px-2 py-1 rounded">Exercise 5</span>
+                            <span class="text-xs text-slate-400 font-medium">Topic: Plurals (-s)</span>
+                        </div>
+                        <p class="text-slate-800 font-medium">Complete: I like to play with all my ________. (friend)</p>
+                        <button onclick="toggleSolution('sol-5')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="sol-5" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Step-by-step Solution:</strong> Make "friend" plural by adding -s.<br><strong>Answer:</strong> <strong>friends</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Intermediate Exercises (6 to 10) -->
+                <div class="space-y-4 pt-4">
+                    <h3 class="text-montanoBlue font-bold text-lg border-b pb-1">🔵 Intermediate Level Exercises</h3>
+
+                    <!-- Exercise 6 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold bg-blue-100 text-montanoBlue px-2 py-1 rounded">Exercise 6</span>
+                            <span class="text-xs text-slate-400 font-medium">Topic: Irregular Plurals</span>
+                        </div>
+                        <p class="text-slate-800 font-medium">Complete with the correct plural of tooth: My rabbit has two big ________.</p>
+                        <button onclick="toggleSolution('sol-6')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="sol-6" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Step-by-step Solution:</strong> "Tooth" is an irregular noun; oo changes to ee.<br><strong>Answer:</strong> <strong>teeth</strong>
+                        </div>
+                    </div>
+
+                    <!-- Exercise 7 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold bg-blue-100 text-montanoBlue px-2 py-1 rounded">Exercise 7</span>
+                            <span class="text-xs text-slate-400 font-medium">Topic: Irregular Plurals (f to ves)</span>
+                        </div>
+                        <p class="text-slate-800 font-medium">Complete: There are books on the three ________ in my room. (shelf)</p>
+                        <button onclick="toggleSolution('sol-7')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="sol-7" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Step-by-step Solution:</strong> Nouns ending in -f change to -ves in plural.<br><strong>Answer:</strong> <strong>shelves</strong>
+                        </div>
+                    </div>
+
+                    <!-- Exercise 8 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold bg-blue-100 text-montanoBlue px-2 py-1 rounded">Exercise 8</span>
+                            <span class="text-xs text-slate-400 font-medium">Topic: Expression (Look)</span>
+                        </div>
+                        <p class="text-slate-800 font-medium">Look at the image description: A boy yawns and covers his mouth. Complete: He looks ________.</p>
+                        <button onclick="toggleSolution('sol-8')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="sol-8" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Step-by-step Solution:</strong> Yawning is a sign of tiredness.<br><strong>Answer:</strong> <strong>tired</strong>
+                        </div>
+                    </div>
+
+                    <!-- Exercise 9 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold bg-blue-100 text-montanoBlue px-2 py-1 rounded">Exercise 9</span>
+                            <span class="text-xs text-slate-400 font-medium">Topic: Expression (Look)</span>
+                        </div>
+                        <p class="text-slate-800 font-medium">Complete: A girl with a plate of spaghetti eating eagerly. Complete: She looks ________. (hungry / thirsty)</p>
+                        <button onclick="toggleSolution('sol-9')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="sol-9" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Step-by-step Solution:</strong> Eating food eagerly means she is hungry.<br><strong>Answer:</strong> <strong>hungry</strong>
+                        </div>
+                    </div>
+
+                    <!-- Exercise 10 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold bg-blue-100 text-montanoBlue px-2 py-1 rounded">Exercise 10</span>
+                            <span class="text-xs text-slate-400 font-medium">Topic: Irregular Plurals</span>
+                        </div>
+                        <p class="text-slate-800 font-medium">Complete: There are ten ________ on the train. (person)</p>
+                        <button onclick="toggleSolution('sol-10')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="sol-10" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Step-by-step Solution:</strong> The plural of person is people.<br><strong>Answer:</strong> <strong>people</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Exercises (11 to 15) -->
+                <div class="space-y-4 pt-4">
+                    <h3 class="text-montanoTeal font-bold text-lg border-b pb-1">🟣 Advanced Level Exercises</h3>
+
+                    <!-- Exercise 11 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold bg-teal-100 text-montanoTeal px-2 py-1 rounded">Exercise 11</span>
+                            <span class="text-xs text-slate-400 font-medium">Topic: Word Order</span>
+                        </div>
+                        <p class="text-slate-800 font-medium">Unscramble the words to make a correct sentence: <strong>you? / How / are</strong></p>
+                        <button onclick="toggleSolution('sol-11')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="sol-11" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Step-by-step Solution:</strong> Standard question order is Question Word (How) + Verb (are) + Pronoun (you?).<br><strong>Answer:</strong> <strong>How are you?</strong>
+                        </div>
+                    </div>
+
+                    <!-- Exercise 12 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold bg-teal-100 text-montanoTeal px-2 py-1 rounded">Exercise 12</span>
+                            <span class="text-xs text-slate-400 font-medium">Topic: Combined Plurals</span>
+                        </div>
+                        <p class="text-slate-800 font-medium">Correct the sentence error: "There are two man and three woman in the park."</p>
+                        <button onclick="toggleSolution('sol-12')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="sol-12" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Step-by-step Solution:</strong> Both man and woman are irregular and need plural forms (men, women).<br><strong>Answer:</strong> "There are two <strong>men</strong> and three <strong>women</strong> in the park."
+                        </div>
+                    </div>
+
+                    <!-- Exercise 13 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold bg-teal-100 text-montanoTeal px-2 py-1 rounded">Exercise 13</span>
+                            <span class="text-xs text-slate-400 font-medium">Topic: Complex Expression</span>
+                        </div>
+                        <p class="text-slate-800 font-medium">Fill in the blank with the correct form: "Look at Tom! He has a glass of water because he looks ________." (thirsty / hungry)</p>
+                        <button onclick="toggleSolution('sol-13')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="sol-13" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Step-by-step Solution:</strong> Drinking water relates to thirst.<br><strong>Answer:</strong> <strong>thirsty</strong>
+                        </div>
+                    </div>
+
+                    <!-- Exercise 14 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold bg-teal-100 text-montanoTeal px-2 py-1 rounded">Exercise 14</span>
+                            <span class="text-xs text-slate-400 font-medium">Topic: Irregular Anatomy Plural</span>
+                        </div>
+                        <p class="text-slate-800 font-medium">Find the error: "My dog ran fast with its four foots in the mud." Fix it.</p>
+                        <button onclick="toggleSolution('sol-14')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="sol-14" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Step-by-step Solution:</strong> The plural of foot is feet, not foots.<br><strong>Answer:</strong> "My dog ran fast with its four <strong>feet</strong> in the mud."
+                        </div>
+                    </div>
+
+                    <!-- Exercise 15 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold bg-teal-100 text-montanoTeal px-2 py-1 rounded">Exercise 15</span>
+                            <span class="text-xs text-slate-400 font-medium">Topic: Invariable Plurals</span>
+                        </div>
+                        <p class="text-slate-800 font-medium">Complete: In the playground picture, I can see five ________ grazing near the fence. (sheep)</p>
+                        <button onclick="toggleSolution('sol-15')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="sol-15" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Step-by-step Solution:</strong> Sheep is the same in singular and plural.<br><strong>Answer:</strong> <strong>sheep</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: CRITICAL REFLECTION -->
+            <section id="tab-reflection" class="tab-content hidden space-y-6">
+                <div class="bg-white p-6 rounded-xl border-l-8 border-montanoTeal shadow-md">
+                    <h2 class="text-2xl font-bold text-montanoBlue mb-2">Critical Reflection & Logical Thinking 🧠</h2>
+                    <p class="text-slate-600">Discuss these questions with your teacher or classmates to deepen your understanding of English grammar in real life.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-montanoTeal/30 space-y-3">
+                        <div class="text-montanoTeal font-bold text-lg">Question 1</div>
+                        <p class="text-slate-700 font-medium">Why do you think some words like <strong>tooth → teeth</strong> change completely in plural, while other words like <strong>kite → kites</strong> just add an <strong>-s</strong>?</p>
+                        <div class="bg-montanoBg p-3 rounded-lg text-sm text-slate-600 italic">
+                            <strong>Hint:</strong> Think about old historical languages and how English evolved over hundreds of years!
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-montanoTeal/30 space-y-3">
+                        <div class="text-montanoTeal font-bold text-lg">Question 2</div>
+                        <p class="text-slate-700 font-medium">How can observing a person's facial expressions (like looking <strong>hungry</strong>, <strong>angry</strong>, or <strong>excited</strong>) help us be better and more empathetic friends?</p>
+                        <div class="bg-montanoBg p-3 rounded-lg text-sm text-slate-600 italic">
+                            <strong>Hint:</strong> Empathy allows us to understand how others feel without them always needing to speak.
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-montanoTeal/30 space-y-3">
+                        <div class="text-montanoTeal font-bold text-lg">Question 3</div>
+                        <p class="text-slate-700 font-medium">When someone asks you <em>"How are you?"</em>, why is it useful to have options beyond just saying "Fine"? How does saying <em>"I'm tired"</em> or <em>"I'm great"</em> change communication?</p>
+                        <div class="bg-montanoBg p-3 rounded-lg text-sm text-slate-600 italic">
+                            <strong>Hint:</strong> Specific feelings give accurate information about our energy and mood.
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-montanoTeal/30 space-y-3">
+                        <div class="text-montanoTeal font-bold text-lg">Question 4</div>
+                        <p class="text-slate-700 font-medium">Why doesn't the word <strong>sheep</strong> change when there are many of them? Can you think of other animals that stay the same? (Hint: fish!)</p>
+                        <div class="bg-montanoBg p-3 rounded-lg text-sm text-slate-600 italic">
+                            <strong>Hint:</strong> Certain farm and aquatic animals have invariable plural forms in English.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: FORMATIVE EVALUATION -->
+            <section id="tab-evaluation" class="tab-content hidden space-y-6">
+                <div class="bg-white p-6 rounded-xl border-l-8 border-montanoYellow shadow-md">
+                    <h2 class="text-2xl font-bold text-montanoBlue mb-2">Formative Quiz & Review 📝</h2>
+                    <p class="text-slate-600">Test what you've learned in Unit 3/6! Click <strong>"Show Solution"</strong> under each question to verify your answers.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Eval Question 1 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <span class="text-xs font-bold bg-yellow-100 text-amber-700 px-2 py-1 rounded">Question 1</span>
+                        <p class="text-slate-800 font-medium">Choose the correct pronoun contraction: <em>"We are great friends."</em> can be written as <em>"________ are great friends."</em></p>
+                        <button onclick="toggleSolution('eval-1')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="eval-1" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Solution:</strong> We are contracts to We're.<br><strong>Answer:</strong> <strong>We're</strong>
+                        </div>
+                    </div>
+
+                    <!-- Eval Question 2 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <span class="text-xs font-bold bg-yellow-100 text-amber-700 px-2 py-1 rounded">Question 2</span>
+                        <p class="text-slate-800 font-medium">What is the plural form of <strong>child</strong>?</p>
+                        <button onclick="toggleSolution('eval-2')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="eval-2" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Solution:</strong> Child is an irregular noun that takes -ren in plural.<br><strong>Answer:</strong> <strong>children</strong>
+                        </div>
+                    </div>
+
+                    <!-- Eval Question 3 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <span class="text-xs font-bold bg-yellow-100 text-amber-700 px-2 py-1 rounded">Question 3</span>
+                        <p class="text-slate-800 font-medium">Complete the sentence for a person frowning with anger: <em>"He looks ________."</em></p>
+                        <button onclick="toggleSolution('eval-3')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="eval-3" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Solution:</strong> Frowning and looking upset corresponds to angry.<br><strong>Answer:</strong> <strong>angry</strong>
+                        </div>
+                    </div>
+
+                    <!-- Eval Question 4 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-montanoLightBlue/40 space-y-3">
+                        <span class="text-xs font-bold bg-yellow-100 text-amber-700 px-2 py-1 rounded">Question 4</span>
+                        <p class="text-slate-800 font-medium">What is the plural form of <strong>foot</strong>?</p>
+                        <button onclick="toggleSolution('eval-4')" class="bg-montanoBlue text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-sky-700 transition">Show Solution</button>
+                        <div id="eval-4" class="hidden bg-montanoLightBlue/20 p-3 rounded-lg text-sm text-slate-700 border-l-4 border-montanoBlue mt-2">
+                            <strong>Solution:</strong> Foot changes oo to ee.<br><strong>Answer:</strong> <strong>feet</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer Bar -->
+        <footer class="bg-slate-800 text-slate-300 p-4 text-center text-xs md:text-sm border-t border-slate-700 flex flex-wrap justify-between items-center px-6">
+            <p>© 2026 Colegio Montano • Educational Web Whiteboard</p>
+            <p class="text-montanoYellow font-medium">Our World 2 • Grammar Mastery</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript Interactive Logic -->
+    <script>
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.add('hidden'));
+
+            // Remove active styles from all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-montanoBlue', 'text-white', 'shadow-sm');
+                btn.classList.add('bg-white', 'text-slate-700', 'hover:bg-montanoLightBlue/20');
+            });
+
+            // Show selected tab content
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            // Highlight active button
+            const activeBtn = document.querySelector(`[data-tab="${tabId}"]`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-white', 'text-slate-700', 'hover:bg-montanoLightBlue/20');
+                activeBtn.classList.add('bg-montanoBlue', 'text-white', 'shadow-sm');
+            }
+        }
+
+        // Toggle Show/Hide Solution
+        function toggleSolution(solId) {
+            const solDiv = document.getElementById(solId);
+            if (solDiv.classList.contains('hidden')) {
+                solDiv.classList.remove('hidden');
+                event.target.textContent = 'Hide Solution';
+                event.target.classList.remove('bg-montanoBlue', 'hover:bg-sky-700');
+                event.target.classList.add('bg-montanoTeal', 'hover:bg-teal-700');
+            } else {
+                solDiv.classList.add('hidden');
+                event.target.textContent = 'Show Solution';
+                event.target.classList.remove('bg-montanoTeal', 'hover:bg-teal-700');
+                event.target.classList.add('bg-montanoBlue', 'hover:bg-sky-700');
+            }
+        }
+
+        // Fullscreen API Toggle
+        function toggleFullscreen() {
+            const container = document.getElementById('whiteboard-container');
+            const fsIcon = document.getElementById('fs-icon');
+
+            if (!document.fullscreenElement) {
+                if (container.requestFullscreen) {
+                    container.requestFullscreen();
+                } else if (container.webkitRequestFullscreen) {
+                    container.webkitRequestFullscreen();
+                } else if (container.msRequestFullscreen) {
+                    container.msRequestFullscreen();
+                }
+                fsIcon.textContent = '⤫';
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+                fsIcon.textContent = '⛶';
+            }
+        }
+    </script>
+</body>
+</html>
